@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>COMPONENTE</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+</head>
+
+<body>
+    <div id="main" class="container">
+        <h1>COMPONENTES</h1>
+        <p>Un componentes permite reutilizar codigo.</p>
+        <div class="row">
+            <div class="col-sm-3">
+                <h1>Albums</h1>
+                <!-- Pasar como parametro al componente el listado -->
+                <common-list v-bind:lists="albums"></common-list>
+            </div>
+            <div class="col-sm-3">
+                <h1>Posts</h1>
+                <!-- Pasar como parametro al componente el listado -->
+                <common-list v-bind:lists="posts"></common-list>
+            </div>
+            <div class="col-sm-3">
+                    <h1>Photos</h1>
+                    <!-- Pasar como parametro al componente el listado -->
+                    <common-list v-bind:lists="photos"></common-list>
+                </div>
+            <div class="col-sm-3">
+                <h1>JSON</h1>
+                <pre>
+                    {{ $data }}
+                </pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Definir la plantilla a utilizar -->
+    <template id="plantilla-listado">
+        <ul class="list-group">
+            <li v-for="item in lists" class="list-group-item">
+                {{ item.title }}
+            </li>
+        </ul>
+    </template>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+    <script>
+        // Definir un componente donde
+        // Vue.component(nombre-componente, funcion_anonima)
+        Vue.component('common-list', {
+            // lists es la propiedad que se va reemplazar en la plantilla
+            props : ['lists'], 
+            // Invocar a la plantilla
+            template: '#plantilla-listado',
+        });
+
+        var urlPosts = 'https://jsonplaceholder.typicode.com/posts';
+        var urlAlbums = 'https://jsonplaceholder.typicode.com/albums';
+        new Vue({
+            el: '#main',
+            // Llama a las funciones para llenar datos
+            created: function() {
+                this.getPosts();
+                this.getAlbums();
+            },
+            data: {
+                posts: [],
+                albums: [],
+                photos: [
+                    {title: 'foto1'},
+                    {title: 'foto2'},
+                ],
+            },
+            methods: {
+                // Obtener datos desde la url
+                getPosts: function () {
+                    axios.get(urlPosts).then(response => {
+                        this.posts = response.data;
+                    });
+                },
+                getAlbums: function () {
+                    axios.get(urlAlbums).then(response => {
+                        this.albums = response.data;
+                    });
+                }
+            },
+        });    
+    </script>
+</body>
+
+</html>

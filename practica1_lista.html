@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>LISTAS</title>
+</head>
+
+<body>
+    <div id="main">
+        <ul>
+            <li v-for="item in people">
+                {{ item }}
+            </li>
+        </ul>
+        <hr>
+        <ul>
+            <li v-for="item in people" v-text="item"></li>
+        </ul>
+        <input type="text" v-model="name" v-on:keyup.enter="addName">
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <script>
+        // Definir un objeto Vue
+        new Vue({
+            // viculamos el objeto vue con un elemento html
+            el: '#main',
+            // definir un array de nombre
+            data: {
+                people: ['Mateo', 'Marcos', 'Lucas', 'Juan']
+            },
+            // vinculamos la caja de texto con el objeto vue
+            name: '',
+            // definir metodo para adicionar un nuevo texto
+            methods: {
+                addName: function () {
+                    this.people.push(this.name);
+                    this.name = '';
+                }
+            }
+        });    
+    </script>
+</body>
+
+</html>
